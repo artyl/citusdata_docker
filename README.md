@@ -37,7 +37,7 @@ In addition to the `latest` (release) tag and the major-, minor-, and patch-spec
 The included `docker-compose.yml` file provides an easy way to get started with a Citus cluster, complete with multiple workers. Just copy it to your current directory and run:
 
 ```bash
-docker-compose -p citus up
+docker compose -p citus up
 
 # Creating network "citus_default" with the default driver
 # Creating citus_worker_1
@@ -60,10 +60,10 @@ SELECT master_get_active_worker_nodes();
 -- (1 row)
 ```
 
-But you can add more workers at will using `docker-compose scale` in another tab. For instance, to bring your worker count to five…
+But you can add more workers at will using `docker compose up --scale` in another tab. For instance, to bring your worker count to five…
 
 ```bash
-docker-compose -p citus scale worker=5
+docker compose -p citus up --scale worker=5 --no-recreate
 
 # Creating and starting 2 ... done
 # Creating and starting 3 ... done
@@ -86,7 +86,7 @@ SELECT master_get_active_worker_nodes();
 
 If you inspect the configuration file, you’ll find that there is a container that is neither a master nor worker node: `citus_config`. It simply listens for new containers tagged with the worker role, then adds them to the config file in a volume shared with the master node. If new nodes have appeared, it calls `master_initialize_node_metadata` against the master to repopulate the node table. See Citus’ [`workerlist-gen`][workerlist-gen] repo for more details.
 
-You can stop your cluster with `docker-compose -p citus down`.
+You can stop your cluster with `docker compose -p citus down`.
 
 ## License
 
